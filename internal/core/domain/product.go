@@ -1,17 +1,9 @@
-package entity
+package domain
 
 import (
   "time"
   "errors"
 )
-
-type ProductInterface interface { 
-  IsActive() bool
-  GetPrice() float64
-  Inactivate() error
-  Activate() error
-  
-}
 
 type Product struct {
   ID int 
