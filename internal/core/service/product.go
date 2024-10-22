@@ -8,11 +8,12 @@ import (
 )
 
 type ProductService struct {
- productRepository port.ProductRepository 
+  categoryRepository port.CategoryRepository
+  productRepository port.ProductRepository
 }
 
-func NewProductService(productRepository port.ProductRepository) *ProductService {
-  return &ProductService{productRepository: productRepository}
+func NewProductService(categoryRepository port.CategoryRepository, productRepository port.ProductRepository) *ProductService {
+  return &ProductService{categoryRepository: categoryRepository, productRepository: productRepository}
 }
 
 func (s *ProductService) GetByID(ctx context.Context, id int) (*domain.Product, error) {
@@ -24,6 +25,13 @@ func (s *ProductService) GetAll(ctx context.Context) ([]*domain.Product, error) 
 }
 
 func (s *ProductService) Create(ctx context.Context, p *domain.Product) error {
+  _, err := s.categoryRepository.FindCategoryByID(ctx, p.Category.ID)
+  if err != nil {
+    if err == domain.ErrDataNotFound {
+      return domain.ErrCategoryNotFound
+    }
+    return domain.ErrInternal
+  }
   return s.productRepository.Create(ctx, p)
 }
 

@@ -14,7 +14,7 @@ type Product struct {
   UpdatedAt time.Time 
   DeletedAt time.Time 
 
-  category *Category 
+  Category *Category 
 }
 
 func (p *Product) IsActive() bool {
