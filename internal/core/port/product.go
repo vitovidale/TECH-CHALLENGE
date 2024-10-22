@@ -3,7 +3,7 @@ package port
 import (
   "context"
 
-  "github.com/vitorvidale/TECH-CHALLENGE/internal/core/domain"
+  "github.com/vitovidale/TECH-CHALLENGE/internal/core/domain"
 )
 
 // ProductRepositoryReader is an interface that wraps all the reading operations for a product. 
