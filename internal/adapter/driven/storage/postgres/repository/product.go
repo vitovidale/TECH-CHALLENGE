@@ -74,7 +74,24 @@ func (r *ProductRepository) Update(ctx context.Context, p *domain.Product) error
   return nil
 }
 
+func (r *ProductRepository) Delete(ctx context.Context, id uint64) error {
+  query := r.db.QueryBuilder.Update("products").
+    Set("deleted_at", time.Now()).
+    Where(squirrel.Eq{"id": id}).
+    Suffix("RETURNING id")
 
+  sql, args, err := query.ToSql()
+  if err != nil {
+    return err
+  }
+
+  _, err = r.db.Exec(ctx, sql, args...)
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
 
 
 // Read operations on product
