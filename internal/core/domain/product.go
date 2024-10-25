@@ -10,6 +10,7 @@ type Product struct {
   Name string 
   Description string 
   Price float64 
+  CategoryID int
   CreatedAt time.Time 
   UpdatedAt time.Time 
   DeletedAt time.Time 
