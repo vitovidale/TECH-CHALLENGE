@@ -2,7 +2,9 @@ package repository
 
 import (
   "context"
-
+  
+  "github.com/Masterminds/squirrel"
+  "github.com/jackc/pgx/v5"
 
   "github.com/vitovidale/TECH-CHALLENGE/internal/adapter/driven/storage/postgres"
   "github.com/vitovidale/TECH-CHALLENGE/internal/core/domain"
@@ -47,3 +49,35 @@ func (r *ProductRepository) Create(ctx context.Context, p *domain.Product) error
   
   return nil
 }
+
+func (r *ProductRepository) FindProductByID(ctx context.Context, id int) (*domain.Product, error) {
+  var p domain.Product
+  query := r.db.QueryBuilder.Select("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").
+    From("products").
+    Where(squirrel.Eq{"id": id}).
+    Limit(1)
+
+  sql, args, err := query.ToSql()
+  if err != nil {
+    return nil, err
+  }
+
+  err = r.db.QueryRow(ctx, sql, args...).Scan(
+    &p.ID,
+    &p.Name,
+    &p.Price,
+    &p.CategoryID,
+    &p.CreatedAt,
+    &p.UpdatedAt,
+    &p.DeletedAt,
+  )
+  if err != nil {
+    if err == pgx.ErrNoRows {
+      return nil, domain.ErrProductNotFound
+    }
+    return nil, err
+  }
+
+  return &p, nil
+}
+
