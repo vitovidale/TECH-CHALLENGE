@@ -16,4 +16,5 @@ var (
   // product errors
   ErrProductAlreadyActive = errors.New("product already active")
   ErrProductAlreadyInactive = errors.New("product already inactive")
+  ErrProductAlreadyExists = errors.New("product already exists")
 )
