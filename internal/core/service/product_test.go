@@ -24,23 +24,29 @@ func TestProductService_CreateProduct(t *testing.T) {
 	ctx := context.Background()
 	categoryID := gofakeit.Number(1, 1000)
 	categoryName := gofakeit.ProductCategory()
+  categoyCreatedAt := gofakeit.Date()
+  categoryUpdatedAt := gofakeit.Date()
+
 	category := &domain.Category{
 		ID:        categoryID,
 		Name:      categoryName,
-		CreatedAt: gofakeit.Date(),
-		UpdatedAt: gofakeit.Date(),
+    CreatedAt: categoyCreatedAt,
+    UpdatedAt: categoryUpdatedAt,
 	}
 
 	productID := gofakeit.Number(1, 1000)
 	productName := gofakeit.ProductName()
 	productPrice := gofakeit.Price(10, 100)
+  productCreatedAt := gofakeit.Date()
+  productUpdatedAt := gofakeit.Date()
+
 	productInput := &domain.Product{
 		ID:         productID,
 		Name:       productName,
 		Price:      productPrice,
 		CategoryID: categoryID,
-		CreatedAt:  gofakeit.Date(),
-		UpdatedAt:  gofakeit.Date(),
+    CreatedAt:  productCreatedAt,
+    UpdatedAt:  productUpdatedAt,
 	}
 
 	productOutput := &domain.Product{
@@ -49,8 +55,8 @@ func TestProductService_CreateProduct(t *testing.T) {
 		Price:      productPrice,
 		CategoryID: categoryID,
 		Category:   category,
-		CreatedAt:  gofakeit.Date(),
-		UpdatedAt:  gofakeit.Date(),
+    CreatedAt:  productCreatedAt,
+    UpdatedAt:  productUpdatedAt,
 	}
 
 	testCases := []struct {
