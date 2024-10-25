@@ -22,7 +22,7 @@ type createCategoryTestedOutput struct {
   
 func TestCategoryService_CreateCategory(t *testing.T) {
   ctx := context.Background()
-  categoryID := gofakeit.Number(1, 1000)
+  categoryID := gofakeit.Uint64()
   categoryName := gofakeit.ProductCategory()
   categoryCreatedAt := gofakeit.Date()
   categoryUpdatedAt := gofakeit.Date()

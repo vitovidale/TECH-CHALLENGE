@@ -6,11 +6,11 @@ import (
 )
 
 type Product struct {
-  ID int 
+  ID uint64 
   Name string 
   Description string 
   Price float64 
-  CategoryID int
+  CategoryID uint64
   CreatedAt time.Time 
   UpdatedAt time.Time 
   DeletedAt time.Time 

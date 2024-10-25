@@ -9,7 +9,7 @@ import (
 
 // CategoryRepositoryReader is an interface that wraps all the reading operations for a category. 
 type CategoryRepositoryReader interface {
-  FindCategoryByID(ctx context.Context, id int) (*domain.Category, error)
+  FindCategoryByID(ctx context.Context, id uint64) (*domain.Category, error)
   FindAllCategories(ctx context.Context) ([]*domain.Category, error)
 }
 
@@ -17,7 +17,7 @@ type CategoryRepositoryReader interface {
 type CategoryRepositoryWriter interface {
   Create(ctx context.Context, p *domain.Category) error
   Update(ctx context.Context, p *domain.Category) error
-  Delete(ctx context.Context, id int) error
+  Delete(ctx context.Context, id uint64) error
 }
 
 // CategoryRepository is an interface that wraps all the reading and writing operations for a category.
@@ -28,9 +28,9 @@ type CategoryRepository interface {
 
 // CategoryService is an interface that wraps all the operations for a category.
 type CategoryService interface {
-  GetByID(ctx context.Context, id int) (*domain.Category, error)
+  GetByID(ctx context.Context, id uint64) (*domain.Category, error)
   GetAll(ctx context.Context) ([]*domain.Category, error)
   Create(ctx context.Context, p *domain.Category) error
-  Inactivate(ctx context.Context, id int) error
-  Activate(ctx context.Context, id int) error
+  Inactivate(ctx context.Context, id uint64) error
+  Activate(ctx context.Context, id uint64) error
 }

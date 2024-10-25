@@ -15,7 +15,7 @@ func NewProductService(categoryRepository port.CategoryRepository, productReposi
 	return &ProductService{categoryRepository: categoryRepository, productRepository: productRepository}
 }
 
-func (s *ProductService) GetByID(ctx context.Context, id int) (*domain.Product, error) {
+func (s *ProductService) GetByID(ctx context.Context, id uint64) (*domain.Product, error) {
 	p, err := s.productRepository.FindProductByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (s *ProductService) Create(ctx context.Context, p *domain.Product) (*domain
 	return p, nil
 }
 
-func (s *ProductService) Inactivate(ctx context.Context, id int) (*domain.Product, error) {
+func (s *ProductService) Inactivate(ctx context.Context, id uint64) (*domain.Product, error) {
 	p, err := s.productRepository.FindProductByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (s *ProductService) Inactivate(ctx context.Context, id int) (*domain.Produc
 	return p, nil
 }
 
-func (s *ProductService) Activate(ctx context.Context, id int) (*domain.Product, error) {
+func (s *ProductService) Activate(ctx context.Context, id uint64) (*domain.Product, error) {
 	p, err := s.productRepository.FindProductByID(ctx, id)
 	if err != nil {
 		return nil, err

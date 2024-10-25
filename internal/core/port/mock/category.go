@@ -56,7 +56,7 @@ func (mr *MockCategoryRepositoryMockRecorder) Create(ctx, p any) *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockCategoryRepository) Delete(ctx context.Context, id int) error {
+func (m *MockCategoryRepository) Delete(ctx context.Context, id uint64) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
@@ -85,7 +85,7 @@ func (mr *MockCategoryRepositoryMockRecorder) FindAllCategories(ctx any) *gomock
 }
 
 // FindCategoryByID mocks base method.
-func (m *MockCategoryRepository) FindCategoryByID(ctx context.Context, id int) (*domain.Category, error) {
+func (m *MockCategoryRepository) FindCategoryByID(ctx context.Context, id uint64) (*domain.Category, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindCategoryByID", ctx, id)
 	ret0, _ := ret[0].(*domain.Category)

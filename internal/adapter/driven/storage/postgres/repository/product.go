@@ -2,6 +2,7 @@ package repository
 
 import (
   "context"
+  "time"
   
   "github.com/Masterminds/squirrel"
   "github.com/jackc/pgx/v5"
@@ -21,8 +22,8 @@ func NewProductRepository(db *postgres.DB) *ProductRepository {
 
 func (r *ProductRepository) Create(ctx context.Context, p *domain.Product) error {
   query := r.db.QueryBuilder.Insert("products").
-    Columns("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").
-    Values(p.ID, p.Name, p.Price, p.CategoryID, p.CreatedAt, p.UpdatedAt, p.DeletedAt).
+  Columns("id", "name", "price", "description", "category_id", "created_at", "updated_at", "deleted_at").
+    Values(p.ID, p.Name, p.Price, p.Description, p.CategoryID, p.CreatedAt, p.UpdatedAt, p.DeletedAt).
     Suffix("RETURNING id")
 
   sql, args, err := query.ToSql()
@@ -30,15 +31,7 @@ func (r *ProductRepository) Create(ctx context.Context, p *domain.Product) error
     return err
   }
 
-  err = r.db.QueryRow(ctx, sql, args...).Scan(
-    &p.ID,
-    &p.Name,
-    &p.Price,
-    &p.CategoryID,
-    &p.CreatedAt,
-    &p.UpdatedAt,
-    &p.DeletedAt,
-  )
+  err = r.db.QueryRow(ctx, sql, args...).Scan(&p.ID)
 
   if err != nil {
     if dbErr := r.db.GetErrorCode(err); dbErr == "23505" {
@@ -50,6 +43,41 @@ func (r *ProductRepository) Create(ctx context.Context, p *domain.Product) error
   return nil
 }
 
+func (r *ProductRepository) Update(ctx context.Context, p *domain.Product) error {
+  categoryId := postgres.NullUint64(p.CategoryID)
+  name := postgres.NullString(p.Name)
+  price := postgres.NullFloat64(p.Price)
+  description := postgres.NullString(p.Description)
+
+  query := r.db.QueryBuilder.Update("products").
+    Set("name", squirrel.Expr("COALESCE(?, name)", name)).
+    Set("category_id", squirrel.Expr("COALESCE(?, category_id)", categoryId)).
+    Set("price", squirrel.Expr("COALESCE(?, price)", price)).
+    Set("description", squirrel.Expr("COALESCE(?, description)", description)).
+    Set("updated_at", time.Now()).
+    Where(squirrel.Eq{"id": p.ID}).
+    Suffix("RETURNING id")
+
+  sql, args, err := query.ToSql()
+  if err != nil {
+    return err
+  }
+
+  err = r.db.QueryRow(ctx, sql, args...).Scan(&p.ID)
+  if err != nil {
+    if dbErr := r.db.GetErrorCode(err); dbErr == "23505" {
+      return domain.ErrProductNotFound
+    }
+    return err
+  }
+  
+  return nil
+}
+
+
+
+
+// Read operations on product
 func (r *ProductRepository) FindProductByID(ctx context.Context, id int) (*domain.Product, error) {
   var p domain.Product
   query := r.db.QueryBuilder.Select("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").

@@ -56,7 +56,7 @@ func (mr *MockProductRepositoryMockRecorder) Create(ctx, p any) *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockProductRepository) Delete(ctx context.Context, id int) error {
+func (m *MockProductRepository) Delete(ctx context.Context, id uint64) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
@@ -85,7 +85,7 @@ func (mr *MockProductRepositoryMockRecorder) FindAllProducts(ctx any) *gomock.Ca
 }
 
 // FindProductByID mocks base method.
-func (m *MockProductRepository) FindProductByID(ctx context.Context, id int) (*domain.Product, error) {
+func (m *MockProductRepository) FindProductByID(ctx context.Context, id uint64) (*domain.Product, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindProductByID", ctx, id)
 	ret0, _ := ret[0].(*domain.Product)

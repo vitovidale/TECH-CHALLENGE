@@ -22,7 +22,7 @@ type createProductTestedOutput struct {
 
 func TestProductService_CreateProduct(t *testing.T) {
 	ctx := context.Background()
-	categoryID := gofakeit.Number(1, 1000)
+	categoryID := gofakeit.Uint64()
 	categoryName := gofakeit.ProductCategory()
   categoyCreatedAt := gofakeit.Date()
   categoryUpdatedAt := gofakeit.Date()
@@ -34,7 +34,7 @@ func TestProductService_CreateProduct(t *testing.T) {
     UpdatedAt: categoryUpdatedAt,
 	}
 
-	productID := gofakeit.Number(1, 1000)
+	productID := gofakeit.Uint64()
 	productName := gofakeit.ProductName()
 	productPrice := gofakeit.Price(10, 100)
   productCreatedAt := gofakeit.Date()

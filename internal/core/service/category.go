@@ -14,7 +14,7 @@ func NewCategoryService(categoryRepository port.CategoryRepository) *CategorySer
   return &CategoryService{categoryRepository: categoryRepository}
 }
 
-func (s *CategoryService) GetByID(ctx context.Context, id int) (*domain.Category, error) {
+func (s *CategoryService) GetByID(ctx context.Context, id uint64) (*domain.Category, error) {
   c, err := s.categoryRepository.FindCategoryByID(ctx, id)
   if err != nil {
     return nil, err
@@ -38,7 +38,7 @@ func (s *CategoryService) Create(ctx context.Context, c *domain.Category) (*doma
   return c, nil
 }
 
-func (s *CategoryService) Inactivate(ctx context.Context, id int) (*domain.Category, error) {
+func (s *CategoryService) Inactivate(ctx context.Context, id uint64) (*domain.Category, error) {
   c, err := s.categoryRepository.FindCategoryByID(ctx, id)
   if err != nil {
     return nil, err
@@ -54,7 +54,7 @@ func (s *CategoryService) Inactivate(ctx context.Context, id int) (*domain.Categ
   return c, nil
 }
 
-func (s *CategoryService) Activate(ctx context.Context, id int) (*domain.Category, error) {
+func (s *CategoryService) Activate(ctx context.Context, id uint64) (*domain.Category, error) {
   c, err := s.categoryRepository.FindCategoryByID(ctx, id)
   if err != nil {
     return nil, err
