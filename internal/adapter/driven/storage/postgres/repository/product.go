@@ -81,3 +81,41 @@ func (r *ProductRepository) FindProductByID(ctx context.Context, id int) (*domai
   return &p, nil
 }
 
+func (r *ProductRepository) FindAllProducts(ctx context.Context) ([]*domain.Product, error) {
+  var p domain.Product
+  var products []*domain.Product
+
+  query := r.db.QueryBuilder.Select("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").
+    From("products").
+    Where(squirrel.Eq{"deleted_at": nil}).
+    OrderBy("id")
+
+  sql, args, err := query.ToSql()
+  if err != nil {
+    return nil, err
+  }
+
+  rows, err := r.db.Query(ctx, sql, args...)
+  if err != nil {
+    return nil, err
+  }
+  defer rows.Close()
+
+  for rows.Next() {
+    err := rows.Scan(
+      &p.ID,
+      &p.Name,
+      &p.Price,
+      &p.CategoryID,
+      &p.CreatedAt,
+      &p.UpdatedAt,
+      &p.DeletedAt,
+    )
+    if err != nil {
+      return nil, err
+    }
+    products = append(products, &p)
+  }
+
+  return products, nil
+}
