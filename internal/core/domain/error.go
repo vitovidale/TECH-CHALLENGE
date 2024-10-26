@@ -11,6 +11,7 @@ var (
   // category errors
   ErrCategoryAlreadyActive = errors.New("category already active")
   ErrCategoryAlreadyInactive = errors.New("category already inactive")
+  ErrCategoryAlreadyExists = errors.New("category already exists")
   ErrCategoryNotFound = errors.New("category not found")
   
   // product errors

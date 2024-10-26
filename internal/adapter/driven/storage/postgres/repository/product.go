@@ -97,7 +97,7 @@ func (r *ProductRepository) Delete(ctx context.Context, id uint64) error {
 // Read operations on product
 func (r *ProductRepository) FindProductByID(ctx context.Context, id int) (*domain.Product, error) {
   var p domain.Product
-  query := r.db.QueryBuilder.Select("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").
+  query := r.db.QueryBuilder.Select("id", "name", "price", "description", "category_id", "created_at", "updated_at", "deleted_at").
     From("products").
     Where(squirrel.Eq{"id": id}).
     Limit(1)
@@ -111,6 +111,7 @@ func (r *ProductRepository) FindProductByID(ctx context.Context, id int) (*domai
     &p.ID,
     &p.Name,
     &p.Price,
+    &p.Description,
     &p.CategoryID,
     &p.CreatedAt,
     &p.UpdatedAt,
@@ -130,7 +131,7 @@ func (r *ProductRepository) FindAllProducts(ctx context.Context) ([]*domain.Prod
   var p domain.Product
   var products []*domain.Product
 
-  query := r.db.QueryBuilder.Select("id", "name", "price", "category_id", "created_at", "updated_at", "deleted_at").
+  query := r.db.QueryBuilder.Select("id", "name", "price", "description", "category_id", "created_at", "updated_at", "deleted_at").
     From("products").
     Where(squirrel.Eq{"deleted_at": nil}).
     OrderBy("id")
@@ -151,6 +152,7 @@ func (r *ProductRepository) FindAllProducts(ctx context.Context) ([]*domain.Prod
       &p.ID,
       &p.Name,
       &p.Price,
+      &p.Description,
       &p.CategoryID,
       &p.CreatedAt,
       &p.UpdatedAt,
